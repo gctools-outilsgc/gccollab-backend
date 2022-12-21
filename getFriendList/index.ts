@@ -19,11 +19,9 @@ const httpTrigger: AzureFunction = async function (
         .request()
         .input("sourceUser", sql.NVarChar(50), source)
         .execute("gcc_list_friends");
-      console.log(query);
 
       return { data: query.recordset, rows: query.rowsAffected };
     } catch (e) {
-      console.log(e.message);
       return { error: e.message };
     }
   };
