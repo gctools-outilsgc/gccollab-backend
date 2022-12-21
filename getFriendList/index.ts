@@ -37,13 +37,6 @@ const httpTrigger: AzureFunction = async function (
       status: 400,
       body: records.error,
     };
-  } else if (records.rows < 1 && records.data.length == 0) {
-    context.res = {
-      status: 200,
-      body: {
-        data: records.data,
-      },
-    };
   }
 };
 export default httpTrigger;
