@@ -15,7 +15,7 @@ const httpTrigger: AzureFunction = async function (
       .request()
       .input("sourceUser", sql.NVarChar(50), sourceUser)
       .input("targetUser", sql.NVarChar(50), targetUser)
-      .execute("create_friend_connection");
+      .execute("gcc_create_friend_connection");
     context.res = {
       status: 200,
       body: {
