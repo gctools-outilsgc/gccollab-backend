@@ -1,5 +1,6 @@
 import * as env from "../config";
 import * as sql from "mssql";
+import * as Gremlin from "gremlin";
 
 const config = {
   user: env.AZ_SQL_USER,
@@ -20,3 +21,17 @@ export const connect = async () => {
     console.error(e);
   }
 };
+
+const authenticator = new Gremlin.driver.auth.PlainTextSaslAuthenticator(
+  `/dbs/${env.AZ_GCDB_DB}/colls/${env.AZ_GCDB_COLL}`,
+  env.AZ_GCDB_PK
+);
+
+const client = new Gremlin.driver.Client(env.AZ_GCDB_ENDPOINT, {
+  authenticator,
+  traversalsource: "g",
+  rejectUnauthorized: true,
+  mimeType: "application/vnd.gremlin-v2.0+json",
+});
+
+export default client;
