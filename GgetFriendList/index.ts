@@ -32,7 +32,7 @@ const httpTrigger: AzureFunction = async function (
           "Content-Type": "application/json",
         },
         status: 400,
-        body: "No data returned",
+        body: `No data returned error: ${err}`,
       };
     });
 };
