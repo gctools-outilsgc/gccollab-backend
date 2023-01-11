@@ -35,8 +35,23 @@ const httpTrigger: AzureFunction = async function (
         registeredAt: Date.now(),
       }
     )
+    .catch((err) => {
+      context.res = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 403,
+        body: `Error encountered: ${err}`,
+      };
+    })
     .then((result) => {
-      console.log(JSON.stringify(result));
+      context.res = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 200,
+        body: `${username} registered successfully`,
+      };
     });
 };
 
