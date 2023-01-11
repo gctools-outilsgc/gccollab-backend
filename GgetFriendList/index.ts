@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { exit } from "process";
 import client from "../db/db.connection";
+import * as env from "../config";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -14,7 +14,6 @@ const httpTrigger: AzureFunction = async function (
       label: "friend",
     })
     .then((result) => {
-      console.log(result.length);
       if (result.length == 0) {
         throw new Error("Query returned no records");
       } else {
