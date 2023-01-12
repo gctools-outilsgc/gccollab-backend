@@ -6,7 +6,7 @@ const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
-  const { username, title, summary, status } = req.body;
+  const { username, title, summary, status, pub } = req.body;
 
   const slug = sluggify(title);
   const metaTitle = summary;
@@ -22,6 +22,7 @@ const httpTrigger: AzureFunction = async function (
     .property('status', status)
     .property('username', username)
     .property('createdAt', createdAt)
+    .property('public', pub)
     .property('pk', 'pk')`,
       {
         label: "groups",
@@ -32,6 +33,7 @@ const httpTrigger: AzureFunction = async function (
         status,
         username,
         summary,
+        pub,
         createdAt: Date.now(),
       }
     )

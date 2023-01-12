@@ -1,6 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import client from "../db/db.connection";
-import * as env from "../config";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -10,26 +9,21 @@ const httpTrigger: AzureFunction = async function (
 
   await client
     .submit(
-      `g.v().has("username", sourceUser)
-    .outE(label).as('friendStatus')
-    .inv().as('friendInfo')
-    .project('friendStatus','friendInfo')
-    .by(select('friendStatus').valueMap("status"))
-    .by(select('friendInfo').valueMap('username'))`,
-      {
-        sourceUser,
-        label: "friend",
-      }
+      `g.V(sourceUser).valueMap().local(unfold()
+    .where(select(keys).is(without(["pk"])))
+    .group().by(select(keys)).by(select(values)))`,
+      { sourceUser }
     )
     .then((result) => {
-      if (result.length == 0) {
-        throw new Error("Query returned no records");
+      if (result._items.length == 0) {
+        throw new Error();
       } else {
         context.res = {
           headers: {
             "Content-Type": "application/json",
           },
-          body: { data: result._items },
+          status: 200,
+          body: { data: result._items[0] },
         };
       }
     })
@@ -39,7 +33,7 @@ const httpTrigger: AzureFunction = async function (
           "Content-Type": "application/json",
         },
         status: err.statusCode || 400,
-        body: `Bad request sent to server. Either no data was returned, or data is missing from request `,
+        body: `${`Bad request sent to server. Either no data was returned, or data is missing from request`}`,
       };
     });
 };
