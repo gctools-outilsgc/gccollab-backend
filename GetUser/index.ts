@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { client } from "../db/db.connection";
+import { pool } from "../db/db.connection";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -11,8 +11,8 @@ const httpTrigger: AzureFunction = async function (
     values: [req.body.username],
   };
 
-  client.connect();
-  const results = await client.query(query);
+  await pool.connect();
+  const results = await pool.query(query);
 
   context.res = {
     // status: 200, /* Defaults to 200 */
