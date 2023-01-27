@@ -1,37 +1,13 @@
 import * as env from "../config";
-import * as sql from "mssql";
-import * as Gremlin from "gremlin";
+import * as pg from "pg";
 
 const config = {
-  user: env.AZ_SQL_USER,
-  password: env.AZ_SQL_PASS,
-  server: env.AZ_SQL_URL,
-  database: env.AZ_SQL_DB,
-  options: {
-    encrypt: true,
-    trustServerCertificate: false, // change to true for local dev / self-signed certs
-  },
+  host: "devgcx-collab-pg.postgres.database.azure.com",
+  user: env.PG_USER,
+  password: env.PG_PASS,
+  database: env.PG_DB,
+  port: env.PG_PORT,
+  ssl: true,
 };
 
-export const connect = async () => {
-  try {
-    const db = await sql.connect(config);
-    return db;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const authenticator = new Gremlin.driver.auth.PlainTextSaslAuthenticator(
-  `/dbs/${env.AZ_GCDB_DB}/colls/${env.AZ_GCDB_COLL}`,
-  env.AZ_GCDB_PK
-);
-
-const client = new Gremlin.driver.Client(env.AZ_GCDB_ENDPOINT, {
-  authenticator,
-  traversalsource: "g",
-  rejectUnauthorized: true,
-  mimeType: "application/vnd.gremlin-v2.0+json",
-});
-
-export default client;
+export const client = new pg.Client(config);

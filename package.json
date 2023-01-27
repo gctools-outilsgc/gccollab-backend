@@ -11,8 +11,7 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "gremlin": "^3.6.1",
-    "mssql": "^9.0.1"
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "@azure/functions": "^3.0.0",

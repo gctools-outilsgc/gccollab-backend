@@ -5,7 +5,7 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["get"]
+      "methods": ["GET"]
     },
     {
       "type": "http",
@@ -13,5 +13,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/getFriendList/index.js"
+  "scriptFile": "../dist/GetUser/index.js"
 }
