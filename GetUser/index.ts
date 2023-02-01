@@ -5,6 +5,15 @@ const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
+  if (req.body == undefined) {
+    context.res = {
+      status: 400,
+      // status: 200, /* Defaults to 200 */
+      headers: { "Content-Type": "application/json" },
+      body: "No data passed",
+    };
+    return;
+  }
   const query = {
     name: "get_user",
     text: "SELECT get_user($1)",
@@ -12,13 +21,21 @@ const httpTrigger: AzureFunction = async function (
   };
 
   await pool.connect();
-  const results = await pool.query(query);
-
-  context.res = {
-    // status: 200, /* Defaults to 200 */
-    headers: { "Content-Type": "application/json" },
-    body: results.rows[0].get_user,
-  };
+  try {
+    const results = await pool.query(query);
+    context.res = {
+      // status: 200, /* Defaults to 200 */
+      headers: { "Content-Type": "application/json" },
+      body: { data: results.rows },
+    };
+  } catch (err) {
+    context.res = {
+      status: 400,
+      // status: 200, /* Defaults to 200 */
+      headers: { "Content-Type": "application/json" },
+      body: err.detail,
+    };
+  }
 };
 
 export default httpTrigger;
