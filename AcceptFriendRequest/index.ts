@@ -15,12 +15,12 @@ const httpTrigger: AzureFunction = async function (
   await pool.connect();
   try {
     const result = await pool.query(query);
-    console.log(result);
+
     context.res = {
       status: 200,
       headers: { "Content-type": "application/json" },
       body:
-        rejected == 1
+        statusCode == 1
           ? `Friend request accepted`
           : `Friend request rejected successfully`,
     };
