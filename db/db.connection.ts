@@ -3,10 +3,10 @@ import * as pg from "pg";
 
 const config = {
   host: "devgcx-collab-pg.postgres.database.azure.com",
-  user: env.PG_USER,
-  password: env.PG_PASS,
-  database: env.PG_DB,
-  port: env.PG_PORT,
+  user: env.PGUSER,
+  password: env.PGPASS,
+  database: env.PGDB,
+  port: env.PGPORT,
   ssl: true,
 };
 
