@@ -13,5 +13,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/get_sentmessages/index.js"
+  "scriptFile": "../dist/get_sentmessagescount/index.js"
 }
